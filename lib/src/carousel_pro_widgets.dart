@@ -25,7 +25,7 @@ class WidgetCarousel extends StatefulWidget {
   final Color dotColor;
 
   // The background Color of the dots. Default is [Colors.grey[800].withOpacity(0.5)]
-  final Color dotBgColor;
+  final Color? dotBgColor;
 
   // Enable or Disable the indicator (dots). Default is true
   final bool showIndicator;
@@ -40,7 +40,7 @@ class WidgetCarousel extends StatefulWidget {
   final bool borderRadius;
 
   //Border Radius of the images. Default is [Radius.circular(8.0)]
-  final Radius radius;
+  final Radius? radius;
 
   //Move the Indicator From the Bottom
   final double moveIndicatorFromBottom;
@@ -52,7 +52,7 @@ class WidgetCarousel extends StatefulWidget {
   final bool overlayShadow;
 
   //Choose the color of the overlay Shadow color. Default Colors.grey[800]
-  final Color overlayShadowColors;
+  final Color? overlayShadowColors;
 
   //Choose the size of the Overlay Shadow, from 0.0 to 1.0. Default 0.5
   final double overlayShadowSize;
@@ -64,33 +64,26 @@ class WidgetCarousel extends StatefulWidget {
   final Duration autoplayDuration;
 
   WidgetCarousel(
-      {this.pages,
-      this.animationCurve = Curves.ease,
-      this.animationDuration = const Duration(milliseconds: 300),
-      this.dotSize = 8.0,
-      this.dotSpacing = 25.0,
-      this.dotIncreaseSize = 2.0,
-      this.dotColor = Colors.white,
-      this.dotBgColor,
-      this.showIndicator = true,
-      this.indicatorBgPadding = 20.0,
-      this.boxFit = BoxFit.cover,
-      this.borderRadius = false,
-      this.radius,
-      this.moveIndicatorFromBottom = 0.0,
-      this.noRadiusForIndicator = false,
-      this.overlayShadow = false,
-      this.overlayShadowColors,
-      this.overlayShadowSize = 0.5,
-      this.autoplay = true,
-      this.autoplayDuration = const Duration(seconds: 3)})
-      : assert(pages != null),
-        assert(animationCurve != null),
-        assert(animationDuration != null),
-        assert(dotSize != null),
-        assert(dotSpacing != null),
-        assert(dotIncreaseSize != null),
-        assert(dotColor != null);
+      {required this.pages,
+        this.animationCurve = Curves.ease,
+        this.animationDuration = const Duration(milliseconds: 300),
+        this.dotSize = 8.0,
+        this.dotSpacing = 25.0,
+        this.dotIncreaseSize = 2.0,
+        this.dotColor = Colors.white,
+        this.dotBgColor,
+        this.showIndicator = true,
+        this.indicatorBgPadding = 20.0,
+        this.boxFit = BoxFit.cover,
+        this.borderRadius = false,
+        this.radius,
+        this.moveIndicatorFromBottom = 0.0,
+        this.noRadiusForIndicator = false,
+        this.overlayShadow = false,
+        this.overlayShadowColors,
+        this.overlayShadowSize = 0.5,
+        this.autoplay = true,
+        this.autoplayDuration = const Duration(seconds: 3)});
 
   @override
   State createState() => WidgetCarouselState();
@@ -128,8 +121,8 @@ class WidgetCarouselState extends State<WidgetCarousel> {
   Widget build(BuildContext context) {
     final List<Widget> listPages = widget.pages
         .map((widget) => Container(
-              child: widget,
-            ))
+      child: widget,
+    ))
         .toList();
 
     return Stack(
@@ -143,46 +136,46 @@ class WidgetCarouselState extends State<WidgetCarousel> {
         ),
         widget.showIndicator
             ? Positioned(
-                bottom: widget.moveIndicatorFromBottom,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: widget.dotBgColor == null
-                        ? Colors.grey[800].withOpacity(0.5)
-                        : widget.dotBgColor,
-                    borderRadius: widget.borderRadius
-                        ? (widget.noRadiusForIndicator
-                            ? null
-                            : BorderRadius.only(
-                                bottomLeft: widget.radius != null
-                                    ? widget.radius
-                                    : Radius.circular(8.0),
-                                bottomRight: widget.radius != null
-                                    ? widget.radius
-                                    : Radius.circular(8.0)))
-                        : null,
-                  ),
-                  padding: EdgeInsets.all(widget.indicatorBgPadding),
-                  child: Center(
-                    child: DotsIndicator(
-                      controller: _controller,
-                      itemCount: listPages.length,
-                      color: widget.dotColor,
-                      dotSize: widget.dotSize,
-                      dotSpacing: widget.dotSpacing,
-                      dotIncreaseSize: widget.dotIncreaseSize,
-                      onPageSelected: (int page) {
-                        _controller.animateToPage(
-                          page,
-                          duration: widget.animationDuration,
-                          curve: widget.animationCurve,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              )
+          bottom: widget.moveIndicatorFromBottom,
+          left: 0.0,
+          right: 0.0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: widget.dotBgColor == null
+                  ? Colors.grey[800]!.withOpacity(0.5)
+                  : widget.dotBgColor,
+              borderRadius: widget.borderRadius
+                  ? (widget.noRadiusForIndicator
+                  ? null
+                  : BorderRadius.only(
+                  bottomLeft: widget.radius != null
+                      ? widget.radius!
+                      : Radius.circular(8.0),
+                  bottomRight: widget.radius != null
+                      ? widget.radius!
+                      : Radius.circular(8.0)))
+                  : null,
+            ),
+            padding: EdgeInsets.all(widget.indicatorBgPadding),
+            child: Center(
+              child: DotsIndicator(
+                controller: _controller,
+                itemCount: listPages.length,
+                color: widget.dotColor,
+                dotSize: widget.dotSize,
+                dotSpacing: widget.dotSpacing,
+                dotIncreaseSize: widget.dotIncreaseSize,
+                onPageSelected: (int page) {
+                  _controller.animateToPage(
+                    page,
+                    duration: widget.animationDuration,
+                    curve: widget.animationCurve,
+                  );
+                },
+              ),
+            ),
+          ),
+        )
             : Container(),
       ],
     );
@@ -192,35 +185,35 @@ class WidgetCarouselState extends State<WidgetCarousel> {
 /// An indicator showing the currently selected page of a PageController
 class DotsIndicator extends AnimatedWidget {
   DotsIndicator(
-      {this.controller,
-      this.itemCount,
-      this.onPageSelected,
-      this.color,
-      this.dotSize,
-      this.dotIncreaseSize,
-      this.dotSpacing})
+      {required this.controller,
+        this.itemCount,
+        this.onPageSelected,
+        this.color,
+        this.dotSize,
+        this.dotIncreaseSize,
+        this.dotSpacing})
       : super(listenable: controller);
 
   // The PageController that this DotsIndicator is representing.
   final PageController controller;
 
   // The number of items managed by the PageController
-  final int itemCount;
+  final int? itemCount;
 
   // Called when a dot is tapped
-  final ValueChanged<int> onPageSelected;
+  final ValueChanged<int>? onPageSelected;
 
   // The color of the dots.
-  final Color color;
+  final Color? color;
 
   // The base size of the dots
-  final double dotSize;
+  final double? dotSize;
 
   // The increase in the size of the selected dot
-  final double dotIncreaseSize;
+  final double? dotIncreaseSize;
 
   // The distance between the center of each dot
-  final double dotSpacing;
+  final double? dotSpacing;
 
   Widget _buildDot(int index) {
     double selectedness = Curves.easeOut.transform(
@@ -229,7 +222,7 @@ class DotsIndicator extends AnimatedWidget {
         1.0 - ((controller.page ?? controller.initialPage) - index).abs(),
       ),
     );
-    double zoom = 1.0 + (dotIncreaseSize - 1.0) * selectedness;
+    double zoom = 1.0 + (dotIncreaseSize! - 1.0) * selectedness;
     return Container(
       width: dotSpacing,
       child: Center(
@@ -237,10 +230,10 @@ class DotsIndicator extends AnimatedWidget {
           color: color,
           type: MaterialType.circle,
           child: Container(
-            width: dotSize * zoom,
-            height: dotSize * zoom,
+            width: dotSize! * zoom,
+            height: dotSize! * zoom,
             child: InkWell(
-              onTap: () => onPageSelected(index),
+              onTap: () => onPageSelected!(index),
             ),
           ),
         ),
@@ -251,7 +244,7 @@ class DotsIndicator extends AnimatedWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List<Widget>.generate(itemCount, _buildDot),
+      children: List<Widget>.generate(itemCount!, _buildDot),
     );
   }
 }
